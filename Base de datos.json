@@ -1,0 +1,750 @@
+[
+    {
+        "id": "05f8227958a1bdef",
+        "type": "tab",
+        "label": "Admin DB",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c2deb8b8cc57911c",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "CREATE TABLE [readings] (\n        [reading_id] INTEGER PRIMARY KEY NOT NULL,\n        [reading_date] INTEGER  NOT NULL,\n        [sensor_id] INTEGER  NOT NULL,\n        [group_id] INTEGER  NOT NULL,\n        [location_id] INTEGER  NOT NULL,\n        [sensor_value] REAL  NOT NULL,\n        FOREIGN KEY ([sensor_id]) REFERENCES [sensores] ([sensor_id]) \n\t\tON DELETE NO ACTION ON UPDATE NO ACTION,\n\t\tFOREIGN KEY ([group_id]) REFERENCES [groups] ([group_id]) \n\t\tON DELETE NO ACTION ON UPDATE NO ACTION,\n\t\tFOREIGN KEY ([location_id]) REFERENCES [locations] ([location_id]) \n\t\tON DELETE NO ACTION ON UPDATE NO ACTION\n);\n",
+        "name": "proyecto.db",
+        "x": 430,
+        "y": 220,
+        "wires": [
+            [
+                "1d1d01070633d9c8"
+            ]
+        ]
+    },
+    {
+        "id": "7c5ef90a0a78f345",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Crear tabla \"readings\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "c2deb8b8cc57911c"
+            ]
+        ]
+    },
+    {
+        "id": "cd62d2c8ba739e6b",
+        "type": "catch",
+        "z": "05f8227958a1bdef",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 80,
+        "y": 100,
+        "wires": [
+            [
+                "47521605c718394d"
+            ]
+        ]
+    },
+    {
+        "id": "1d1d01070633d9c8",
+        "type": "debug",
+        "z": "05f8227958a1bdef",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "bf7e071ea55f83d7",
+        "type": "comment",
+        "z": "05f8227958a1bdef",
+        "name": "Crear la tabla \"readings\"",
+        "info": "",
+        "x": 130,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "47521605c718394d",
+        "type": "function",
+        "z": "05f8227958a1bdef",
+        "name": "Error",
+        "func": "msg.payload = msg.error.message;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 230,
+        "y": 100,
+        "wires": [
+            [
+                "362a64eba90bf893"
+            ]
+        ]
+    },
+    {
+        "id": "362a64eba90bf893",
+        "type": "debug",
+        "z": "05f8227958a1bdef",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "7c6564109f1b17a1",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "DROP TABLE IF EXISTS readings;",
+        "name": "proyecto.db",
+        "x": 430,
+        "y": 280,
+        "wires": [
+            [
+                "1d1d01070633d9c8"
+            ]
+        ]
+    },
+    {
+        "id": "4a8f7dafc2652a03",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Borrar tabla \"readings\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "7c6564109f1b17a1"
+            ]
+        ]
+    },
+    {
+        "id": "8103dc3b9117bd0b",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "DELETE FROM readings;",
+        "name": "readings.db",
+        "x": 430,
+        "y": 340,
+        "wires": [
+            [
+                "1d1d01070633d9c8"
+            ]
+        ]
+    },
+    {
+        "id": "298a56e1453b8844",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Borrar contenido de tabla \"readings\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 340,
+        "wires": [
+            [
+                "8103dc3b9117bd0b"
+            ]
+        ]
+    },
+    {
+        "id": "0555af06ce7389c2",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 40,
+        "wires": [
+            [
+                "f0dbdde94889eeb9"
+            ]
+        ]
+    },
+    {
+        "id": "f0dbdde94889eeb9",
+        "type": "debug",
+        "z": "05f8227958a1bdef",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "c3a5d3feba037db8",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "CREATE TABLE [sensors] (\n        [sensor_id] INTEGER PRIMARY KEY NOT NULL,\n        [name] NVARCHAR(100)  NOT NULL,\n        [variable] NVARCHAR(50)  NOT NULL,\n        [units] NVARCHAR(50)  NOT NULL\n);",
+        "name": "proyecto.db",
+        "x": 430,
+        "y": 440,
+        "wires": [
+            [
+                "b056e0f61f259cd0"
+            ]
+        ]
+    },
+    {
+        "id": "2daff3e3d471b6e3",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Crear tabla \"sensors\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 440,
+        "wires": [
+            [
+                "c3a5d3feba037db8"
+            ]
+        ]
+    },
+    {
+        "id": "b056e0f61f259cd0",
+        "type": "debug",
+        "z": "05f8227958a1bdef",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "47e12fdcefc3da75",
+        "type": "comment",
+        "z": "05f8227958a1bdef",
+        "name": "Crear la tabla \"sensors\"",
+        "info": "",
+        "x": 120,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "2f7758d94ba7a47f",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "DROP TABLE IF EXISTS sensors;",
+        "name": "proyecto.db",
+        "x": 430,
+        "y": 500,
+        "wires": [
+            [
+                "b056e0f61f259cd0"
+            ]
+        ]
+    },
+    {
+        "id": "96c0b9db8788d42e",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Borrar tabla \"sensors\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 500,
+        "wires": [
+            [
+                "2f7758d94ba7a47f"
+            ]
+        ]
+    },
+    {
+        "id": "1d2f24899642a53b",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "DELETE FROM sensors;",
+        "name": "readings.db",
+        "x": 430,
+        "y": 560,
+        "wires": [
+            [
+                "b056e0f61f259cd0"
+            ]
+        ]
+    },
+    {
+        "id": "f85bd70867c2497c",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Borrar contenido de tabla \"sensors\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 560,
+        "wires": [
+            [
+                "1d2f24899642a53b"
+            ]
+        ]
+    },
+    {
+        "id": "cfbe290ff9a5de40",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "CREATE TABLE [groups] (\n        [group_id] INTEGER PRIMARY KEY NOT NULL,\n        [name] NVARCHAR(50)  NOT NULL\n);",
+        "name": "proyecto.db",
+        "x": 430,
+        "y": 720,
+        "wires": [
+            [
+                "e50f359c37828089"
+            ]
+        ]
+    },
+    {
+        "id": "17525e369cca49f4",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Crear tabla \"groups\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 720,
+        "wires": [
+            [
+                "cfbe290ff9a5de40"
+            ]
+        ]
+    },
+    {
+        "id": "e50f359c37828089",
+        "type": "debug",
+        "z": "05f8227958a1bdef",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "9ed980146412aa18",
+        "type": "comment",
+        "z": "05f8227958a1bdef",
+        "name": "Crear la tabla \"groups\"",
+        "info": "",
+        "x": 120,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "08af7c28a8129774",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "DROP TABLE IF EXISTS groups;",
+        "name": "proyecto.db",
+        "x": 430,
+        "y": 780,
+        "wires": [
+            [
+                "e50f359c37828089"
+            ]
+        ]
+    },
+    {
+        "id": "0d74a85cf15ee8cf",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Borrar tabla \"groups\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 780,
+        "wires": [
+            [
+                "08af7c28a8129774"
+            ]
+        ]
+    },
+    {
+        "id": "589e2dabb298e117",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "DELETE FROM groups;",
+        "name": "readings.db",
+        "x": 430,
+        "y": 840,
+        "wires": [
+            [
+                "e50f359c37828089"
+            ]
+        ]
+    },
+    {
+        "id": "543914230cdee7f8",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Borrar contenido de tabla \"groups\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 840,
+        "wires": [
+            [
+                "589e2dabb298e117"
+            ]
+        ]
+    },
+    {
+        "id": "e1e977f2af0d0f3e",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "CREATE TABLE [locations] (\n        [location_id] INTEGER PRIMARY KEY NOT NULL,\n        [name] NVARCHAR(100)  NOT NULL,\n        [longitude] REAL NOT NULL,\n        [latitude] REAL NOT NULL\n);",
+        "name": "proyecto.db",
+        "x": 430,
+        "y": 940,
+        "wires": [
+            [
+                "435b5bafe1c906df"
+            ]
+        ]
+    },
+    {
+        "id": "03ad69897774d8b0",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Crear tabla \"locations\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 940,
+        "wires": [
+            [
+                "e1e977f2af0d0f3e"
+            ]
+        ]
+    },
+    {
+        "id": "435b5bafe1c906df",
+        "type": "debug",
+        "z": "05f8227958a1bdef",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "43213c733fc5bd25",
+        "type": "comment",
+        "z": "05f8227958a1bdef",
+        "name": "Crear la tabla \"locations\"",
+        "info": "",
+        "x": 130,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "be0634a4144cb97c",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "DROP TABLE IF EXISTS locations;",
+        "name": "proyecto.db",
+        "x": 430,
+        "y": 1000,
+        "wires": [
+            [
+                "435b5bafe1c906df"
+            ]
+        ]
+    },
+    {
+        "id": "463fd5d06af93560",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Borrar tabla \"locations\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 1000,
+        "wires": [
+            [
+                "be0634a4144cb97c"
+            ]
+        ]
+    },
+    {
+        "id": "13100273b54f6acb",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "DELETE FROM locations;",
+        "name": "readings.db",
+        "x": 430,
+        "y": 1060,
+        "wires": [
+            [
+                "435b5bafe1c906df"
+            ]
+        ]
+    },
+    {
+        "id": "8a88cde0848b6c75",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Borrar contenido de tabla \"locations\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 1060,
+        "wires": [
+            [
+                "13100273b54f6acb"
+            ]
+        ]
+    },
+    {
+        "id": "e3237aacdb921b81",
+        "type": "sqlite",
+        "z": "05f8227958a1bdef",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "fixed",
+        "sql": "INSERT INTO sensors(name, variable, units)\nVALUES \n       (\"Calidad Agua | Alberca Olas\", \"Calidad del agua\", \"Total de solidos disueltos (TDS)\"),\n       (\"pH | Alberca Olas\", \"Potencial de hidrogeno\", \"Iones de hidrogeno\"),\n       (\"Temperatura | Alberca Olas\", \"Temperatura\", \"Grados centigrados\"),\n       (\"Calidad Agua | Alberca Familiar\", \"Calidad del agua\", \"Total de solidos disueltos (TDS)\"),\n       (\"pH | Alberca Familiar\", \"Potencial de hidrogeno\", \"Iones de hidrogeno\"),\n       (\"Temperatura | Alberca Familiar\", \"Temperatura\", \"Grados centigrados\"),\n       (\"Calidad Agua | Alberca Mariposa\", \"Calidad del agua\", \"Total de solidos disueltos (TDS)\"),\n       (\"pH | Alberca Mariposa\", \"Potencial de hidrogeno\", \"Iones de hidrogeno\"),\n       (\"Temperatura | Alberca Mariposa\", \"Temperatura\", \"Grados centigrados\");",
+        "name": "readings.db",
+        "x": 430,
+        "y": 620,
+        "wires": [
+            [
+                "b056e0f61f259cd0"
+            ]
+        ]
+    },
+    {
+        "id": "3ac6a8fcfa33ac90",
+        "type": "inject",
+        "z": "05f8227958a1bdef",
+        "name": "Agregar datos a la tabla \"sensors\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 620,
+        "wires": [
+            [
+                "e3237aacdb921b81"
+            ]
+        ]
+    },
+    {
+        "id": "63727aa3206e4666",
+        "type": "sqlitedb",
+        "db": "/home/pi/.node-red/dbs/proyecto.db",
+        "mode": "RWC"
+    }
+]
