@@ -1,0 +1,580 @@
+[
+    {
+        "id": "ae55a536e49005ad",
+        "type": "tab",
+        "label": "Tiempo real",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ce60a8649ccefe36",
+        "type": "link in",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "links": [
+            "ecc91af7caa76224"
+        ],
+        "x": 105,
+        "y": 80,
+        "wires": [
+            [
+                "c9b5b3d55a6e1697",
+                "3f60f374cb27fc8e"
+            ]
+        ]
+    },
+    {
+        "id": "3f60f374cb27fc8e",
+        "type": "function",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "func": "var sensor = msg.payload.sensor_id;\nvar valor = msg.payload.sensor_value;\nvar tiempo = msg.payload.reading_date;\n\nmsg.payload = valor;\nmsg.timestamp = tiempo;\n\nif (sensor === 1) {\n    return [msg, null, null, null, null, null, null, null, null];\n \n}else if (sensor === 2){\n    return [null, msg, null, null, null, null, null, null, null];\n    \n}else if (sensor === 3){\n    return [null, null, msg, null, null, null, null, null, null];\n    \n}else if (sensor === 4){\n    return [null, null, null, msg, null, null, null, null, null];\n    \n}else if (sensor === 5){\n    return [null, null, null, null, msg, null, null, null, null];\n    \n}else if (sensor === 6){\n    return [null, null, null, null, null, msg, null, null, null];\n    \n}else if (sensor === 7){\n    return [null, null, null, null, null, null, msg, null, null];\n    \n}else if (sensor === 8){\n    return [null, null, null, null, null, null, null, msg, null];\n    \n}else if (sensor === 9){\n    return [null, null, null, null, null, null, null, null, msg];\n    \n}else{\n    return [null, null, null, null, null, null, null, null, null];\n}\n\n",
+        "outputs": 9,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 180,
+        "wires": [
+            [
+                "211d2e598cfca36b"
+            ],
+            [
+                "61a5d781534df9d2"
+            ],
+            [
+                "c02cbff2f74f0f0f"
+            ],
+            [
+                "c151e2a80a1cb9e5"
+            ],
+            [
+                "2b558114c2d4a0f7"
+            ],
+            [
+                "4939e2ce22bd60c1"
+            ],
+            [
+                "8b46cda0cd8622f7"
+            ],
+            [
+                "4d82b5792c2ace86"
+            ],
+            [
+                "11098e51f845a041"
+            ]
+        ]
+    },
+    {
+        "id": "c9b5b3d55a6e1697",
+        "type": "debug",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 270,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "211d2e598cfca36b",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "184b3fabfae5d1fa",
+        "order": 2,
+        "width": "21",
+        "height": "6",
+        "label": "Calidad del agua",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 590,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "61a5d781534df9d2",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "184b3fabfae5d1fa",
+        "order": 3,
+        "width": "21",
+        "height": "6",
+        "label": "pH",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 550,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c02cbff2f74f0f0f",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "184b3fabfae5d1fa",
+        "order": 4,
+        "width": "21",
+        "height": "6",
+        "label": "Temperatura",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 570,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c151e2a80a1cb9e5",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "227175cc7f63bd3b",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "Calidad del agua",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 590,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2b558114c2d4a0f7",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "227175cc7f63bd3b",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "pH",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 550,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4939e2ce22bd60c1",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "227175cc7f63bd3b",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "Temperatura",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 570,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8b46cda0cd8622f7",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "b250d830180ffb16",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "Calidad del agua",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 590,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4d82b5792c2ace86",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "b250d830180ffb16",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "pH",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 550,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "11098e51f845a041",
+        "type": "ui_chart",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "group": "b250d830180ffb16",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "Temperatura",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#da2b2b",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 570,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "431e81741b59ea5a",
+        "type": "function",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "func": "\nmsg.payload =[];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nflow.set([\"count\", \"colour\", \"temperature\"], [123, \"red\", \"12.5\"]);",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 320,
+        "wires": [
+            [
+                "211d2e598cfca36b",
+                "61a5d781534df9d2",
+                "c02cbff2f74f0f0f",
+                "c151e2a80a1cb9e5",
+                "2b558114c2d4a0f7",
+                "4939e2ce22bd60c1",
+                "8b46cda0cd8622f7",
+                "4d82b5792c2ace86",
+                "11098e51f845a041"
+            ]
+        ]
+    },
+    {
+        "id": "906971310b51bfe4",
+        "type": "inject",
+        "z": "ae55a536e49005ad",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 320,
+        "wires": [
+            [
+                "431e81741b59ea5a"
+            ]
+        ]
+    },
+    {
+        "id": "184b3fabfae5d1fa",
+        "type": "ui_group",
+        "name": "Olas",
+        "tab": "8e8e7b892e91061a",
+        "order": 1,
+        "disp": true,
+        "width": "22",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "227175cc7f63bd3b",
+        "type": "ui_group",
+        "name": "Familiar",
+        "tab": "8e8e7b892e91061a",
+        "order": 2,
+        "disp": true,
+        "width": "22",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b250d830180ffb16",
+        "type": "ui_group",
+        "name": "Mariposa",
+        "tab": "8e8e7b892e91061a",
+        "order": 3,
+        "disp": true,
+        "width": "22",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8e8e7b892e91061a",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
