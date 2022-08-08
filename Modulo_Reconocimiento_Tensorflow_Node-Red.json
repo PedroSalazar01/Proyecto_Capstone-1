@@ -1,0 +1,484 @@
+[
+    {
+        "id": "2277d7fd07d0fc3c",
+        "type": "tab",
+        "label": "Identificación",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "daf6fc763ab9e17a",
+        "type": "teachable machine",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "mode": "online",
+        "modelUrl": "https://teachablemachine.withgoogle.com/models/vMQXCrvY5/",
+        "localModel": "teachable_model",
+        "output": "all",
+        "activeThreshold": true,
+        "threshold": 80,
+        "activeMaxResults": true,
+        "maxResults": 3,
+        "passThrough": true,
+        "x": 710,
+        "y": 260,
+        "wires": [
+            [
+                "9aab3da8b5a7209b"
+            ]
+        ]
+    },
+    {
+        "id": "c1da31ec2ba7e067",
+        "type": "mqtt in",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "topic": "yourtopic/send",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "1c171962cfabcee9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 260,
+        "wires": [
+            [
+                "1bc43c38e74ccedc"
+            ]
+        ]
+    },
+    {
+        "id": "1bc43c38e74ccedc",
+        "type": "jimp-image",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "data": "payload",
+        "dataType": "msg",
+        "ret": "buf",
+        "parameter1": "",
+        "parameter1Type": "msg",
+        "parameter2": "",
+        "parameter2Type": "msg",
+        "parameter3": "",
+        "parameter3Type": "msg",
+        "parameter4": "",
+        "parameter4Type": "msg",
+        "parameter5": "",
+        "parameter5Type": "msg",
+        "parameter6": "",
+        "parameter6Type": "msg",
+        "parameter7": "",
+        "parameter7Type": "msg",
+        "parameter8": "",
+        "parameter8Type": "msg",
+        "sendProperty": "payload",
+        "sendPropertyType": "msg",
+        "parameterCount": 0,
+        "jimpFunction": "none",
+        "selectedJimpFunction": {
+            "name": "none",
+            "fn": "none",
+            "description": "Just loads the image.",
+            "parameters": []
+        },
+        "x": 390,
+        "y": 260,
+        "wires": [
+            [
+                "ebfee62ed855470d",
+                "daf6fc763ab9e17a",
+                "f8ab01c73b48d691"
+            ]
+        ]
+    },
+    {
+        "id": "df608edf9a0ec8ae",
+        "type": "debug",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "ebfee62ed855470d",
+        "type": "image viewer",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "active": true,
+        "x": 490,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "69337640f14c5794",
+        "type": "debug",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "9aab3da8b5a7209b",
+        "type": "json",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": true,
+        "x": 890,
+        "y": 260,
+        "wires": [
+            [
+                "d94d4fe3764f38ff"
+            ]
+        ]
+    },
+    {
+        "id": "4b717807b45bcc24",
+        "type": "inject",
+        "z": "2277d7fd07d0fc3c",
+        "name": "reload",
+        "props": [
+            {
+                "p": "reload",
+                "v": "true",
+                "vt": "bool"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 670,
+        "y": 200,
+        "wires": [
+            [
+                "daf6fc763ab9e17a"
+            ]
+        ]
+    },
+    {
+        "id": "d94d4fe3764f38ff",
+        "type": "change",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].class",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1040,
+        "y": 260,
+        "wires": [
+            [
+                "69337640f14c5794",
+                "5a63d672aa336816"
+            ]
+        ]
+    },
+    {
+        "id": "f8ab01c73b48d691",
+        "type": "cocossd",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "x": 680,
+        "y": 80,
+        "wires": [
+            [
+                "7ec8b2d4476d731e",
+                "df608edf9a0ec8ae",
+                "a37a5f4339d37c18",
+                "0a1eaf885a80e9c3"
+            ]
+        ]
+    },
+    {
+        "id": "7ec8b2d4476d731e",
+        "type": "image",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "width": 160,
+        "data": "annotatedInput",
+        "dataType": "msg",
+        "thumbnail": false,
+        "active": true,
+        "pass": false,
+        "outputs": 0,
+        "x": 380,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "886a8b6392ada673",
+        "type": "mqtt out",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "topic": "yourtopic/get",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1c171962cfabcee9",
+        "x": 990,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "a0d1d8606452d526",
+        "type": "inject",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "?flash=0;0",
+        "payloadType": "str",
+        "x": 720,
+        "y": 400,
+        "wires": [
+            [
+                "886a8b6392ada673",
+                "49a429eba7224dd8"
+            ]
+        ]
+    },
+    {
+        "id": "49a429eba7224dd8",
+        "type": "debug",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "b3e7fafaf946c591",
+        "type": "ui_button",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "group": "2d421da42412b1ba",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Captura Imagen",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "?getstill",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 720,
+        "y": 460,
+        "wires": [
+            [
+                "49a429eba7224dd8",
+                "886a8b6392ada673"
+            ]
+        ]
+    },
+    {
+        "id": "c45b39b5fb8675cd",
+        "type": "ui_template",
+        "z": "2277d7fd07d0fc3c",
+        "group": "2d421da42412b1ba",
+        "name": "",
+        "order": 5,
+        "width": "6",
+        "height": "7",
+        "format": "<!DOCTYPE html>\n<html>\n<style>\n    .img {\n        border: 8px solid #000;\n        border-radius: 8px;\n        padding: 2px;\n        width: 260px;\n    }\n</style>\n\n<center>\n    <table>\n        <tr>\n            <!-- Row 1 -->\n            <td style=\"text-align: center\"><img src=\"data:image/jpg;base64,{{msg.annotatedInput}}\" class=img /></td>\n        </tr>\n    </table>\n</center>\n</html>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 960,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5a63d672aa336816",
+        "type": "ui_text",
+        "z": "2277d7fd07d0fc3c",
+        "group": "2d421da42412b1ba",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Identificación",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 1230,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "a37a5f4339d37c18",
+        "type": "base64",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "action": "",
+        "property": "annotatedInput",
+        "x": 820,
+        "y": 80,
+        "wires": [
+            [
+                "c45b39b5fb8675cd"
+            ]
+        ]
+    },
+    {
+        "id": "0a1eaf885a80e9c3",
+        "type": "ui_text",
+        "z": "2277d7fd07d0fc3c",
+        "group": "2d421da42412b1ba",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Modelo Cocossd, tipo: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1000,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "266687eeed39d860",
+        "type": "ui_button",
+        "z": "2277d7fd07d0fc3c",
+        "name": "",
+        "group": "2d421da42412b1ba",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Activar Flash",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "?flash=255;10",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 710,
+        "y": 520,
+        "wires": [
+            [
+                "886a8b6392ada673"
+            ]
+        ]
+    },
+    {
+        "id": "1c171962cfabcee9",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "200.79.180.228",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "2d421da42412b1ba",
+        "type": "ui_group",
+        "name": "Reconocimiento",
+        "tab": "260b9629eb6625df",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "260b9629eb6625df",
+        "type": "ui_tab",
+        "name": "Reconocimiento",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
