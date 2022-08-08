@@ -1,0 +1,742 @@
+[
+    {
+        "id": "a709e1b6414e142f",
+        "type": "tab",
+        "label": "Input Data",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "82e3ed8f704ad174",
+        "type": "inject",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 120,
+        "wires": [
+            [
+                "23efa1a05288cd11"
+            ]
+        ]
+    },
+    {
+        "id": "9213c9dd48089281",
+        "type": "debug",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "23efa1a05288cd11",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "+2 hrs",
+        "func": "// Fecha inicial: 1656612662479 - 3600000*5 mS\n// Jueves 30 de Junio de 2022 13:11:02 GMT-0500 \n// (Central Daylight Time)\nvar flujo = flow.get(\"flujo\");\n\nif (flujo === \"activado\"){\n    // Original\n    // const REFERENCE = 1656612662479;\n    // Para presentacion\n    const REFERENCE = 1659561062487;\n    const oneHour = 3600000;\n    var currentTime = context.get(\"currentTime\");\n    var noEnvios = context.get(\"noEnvios\");\n\n    msg.payload = currentTime;\n    var residuo = noEnvios % 9;\n\n    if ((residuo === 0) && (currentTime !== REFERENCE)){\n        var referenceTime = context.get(\"referenceTime\"); \n        currentTime = referenceTime + 2*oneHour;\n        context.set(\"referenceTime\", currentTime); \n    }else{\n        currentTime += 1;\n    }\n\n    noEnvios += 1;\n    context.set(\"currentTime\", currentTime)\n    context.set(\"noEnvios\", noEnvios)\n\n    return msg;\n    \n}else{\n    return null;\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\n// if (context.get(\"referenceTime\") === undefined) {\n//     context.set(\"referenceTime\", 1656612662479)\n// }\n\n// if (context.get(\"currentTime\") === undefined) {\n//     context.set(\"currentTime\", 1656612662479)\n// }\n\n// if (context.get(\"noEnvios\") === undefined) {\n//     context.set(\"noEnvios\", 0)\n// }\n\n// if (flow.get(\"flujo\") === undefined) {\n//     flow.set(\"flujo\", \"desactivado\")\n// }\n\n\n\nif (context.get(\"referenceTime\") === undefined) {\n    context.set(\"referenceTime\", 1659561062487)\n}\n\nif (context.get(\"currentTime\") === undefined) {\n    context.set(\"currentTime\", 1659561062487)\n}\n\nif (context.get(\"noEnvios\") === undefined) {\n    context.set(\"noEnvios\", 0)\n}\n\nif (flow.get(\"flujo\") === undefined) {\n    flow.set(\"flujo\", \"desactivado\")\n}\n\n\n\n\n",
+        "finalize": "",
+        "libs": [],
+        "x": 90,
+        "y": 180,
+        "wires": [
+            [
+                "1b0629f3177aff70"
+            ]
+        ]
+    },
+    {
+        "id": "ddeb94e91abdc027",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: Calidad del agua (Alberca de olas)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 300;\nconst max = 600;\n\nvar valor  = Math.floor(Math.random() * (max - min) + min);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 1, \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 40,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "b2a62f2f95078385",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Str >> JS object",
+        "func": "try{\n    msg.payload = JSON.parse(msg.payload);\n    \n    if ((msg.payload.reading_date === undefined)  ||\n       (msg.payload.sensor_id     === undefined)  ||\n       (msg.payload.group_id      === undefined)  ||\n       (msg.payload.location_id   === undefined)  ||\n       (msg.payload.sensor_value  === undefined)) {\n        \n        msg.error = \"Algun valor es indefinido\";\n        return [null, msg];\n        \n    }\n    return [msg, null];\n}\ncatch(error){\n    msg.error = \"Fallo en la conversion a JS Object\";\n    return [null, msg];\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 600,
+        "wires": [
+            [
+                "ecc91af7caa76224"
+            ],
+            [
+                "179a2a9c6c748bb1"
+            ]
+        ]
+    },
+    {
+        "id": "179a2a9c6c748bb1",
+        "type": "debug",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "6124b51562cedef9",
+        "type": "inject",
+        "z": "a709e1b6414e142f",
+        "name": "JSON string sin timestamp",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "{\"sensor_id\":1,\"group_id\":1,\"location_id\":1,\"sensor_value\":400}",
+        "payloadType": "str",
+        "x": 170,
+        "y": 360,
+        "wires": [
+            [
+                "b2a62f2f95078385",
+                "5f5213d8422992b8"
+            ]
+        ]
+    },
+    {
+        "id": "5f5213d8422992b8",
+        "type": "debug",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b798e743e7ded08b",
+        "type": "change",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "lastDate",
+                "pt": "global",
+                "to": "payload.reading_date",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 230,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0be32fd86d047885",
+        "type": "template",
+        "z": "a709e1b6414e142f",
+        "name": "Query Readings ",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "INSERT INTO readings (reading_date, sensor_id, group_id, location_id, sensor_value)\nVALUES \n       ({{payload.reading_date}}, \n       {{payload.sensor_id}}, \n       {{payload.group_id}}, \n       {{payload.location_id}}, \n       {{payload.sensor_value}});",
+        "output": "str",
+        "x": 220,
+        "y": 660,
+        "wires": [
+            [
+                "357ddfd7fb7b3984"
+            ]
+        ]
+    },
+    {
+        "id": "357ddfd7fb7b3984",
+        "type": "sqlite",
+        "z": "a709e1b6414e142f",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 410,
+        "y": 660,
+        "wires": [
+            [
+                "6ae319f39f1d190b"
+            ]
+        ]
+    },
+    {
+        "id": "6ae319f39f1d190b",
+        "type": "debug",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "2d3c495e8c3add17",
+        "type": "link out",
+        "z": "a709e1b6414e142f",
+        "name": "CdtAgua JSON out",
+        "mode": "link",
+        "links": [
+            "54e1029766fbadd4"
+        ],
+        "x": 1145,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "54e1029766fbadd4",
+        "type": "link in",
+        "z": "a709e1b6414e142f",
+        "name": "CdtAgua JSON in",
+        "links": [
+            "2d3c495e8c3add17"
+        ],
+        "x": 85,
+        "y": 600,
+        "wires": [
+            [
+                "b2a62f2f95078385"
+            ]
+        ]
+    },
+    {
+        "id": "c7e1e6f33f372d52",
+        "type": "comment",
+        "z": "a709e1b6414e142f",
+        "name": "Generar datos para calidad del agua",
+        "info": "",
+        "x": 160,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "d51fb55d33c9c67a",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: pH (Alberca de olas)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 6.7;\nconst max = 7.3;\n\nvar valor  = (Math.random() * (max - min) + min).toFixed(1);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 2, \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 80,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "07f846da970a45ff",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: Temperatura (Alberca de olas)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 34;\nconst max = 38;\n\nvar valor  = (Math.random() * (max - min) + min).toFixed(1);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 3, \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 120,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "45fe715b57fcc254",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Mux",
+        "func": "var Salidas = context.get(\"Salidas\");\n\nif (Salidas.length === 0){\n    Salidas = [null, null, null, null,\n              null, null, null, null, msg];\n}\n\n// Rotar a la derecha el arreglo\nlet last = Salidas.pop();\nSalidas.unshift(last);\ncontext.set(\"Salidas\", Salidas);\n\nvar indexNotnull = Salidas.findIndex( \n        function(el) { \n            return (el !== null);\n        }\n    );\n    \nSalidas[indexNotnull] = msg;    \nreturn Salidas;",
+        "outputs": 9,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nif (context.get(\"Contador\") === undefined) {\n    context.set(\"Contador\", 1)\n}\n\nif (context.get(\"Salidas\") === undefined) {\n    context.set(\"Salidas\", [])\n}",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 180,
+        "wires": [
+            [
+                "ddeb94e91abdc027"
+            ],
+            [
+                "d51fb55d33c9c67a"
+            ],
+            [
+                "07f846da970a45ff"
+            ],
+            [
+                "f3f970a67db9a214"
+            ],
+            [
+                "b2e3f8da7eb000a3"
+            ],
+            [
+                "f2a74693b9d9c332"
+            ],
+            [
+                "ea5e4b705917bc14"
+            ],
+            [
+                "42f56bc6c0ba7d92"
+            ],
+            [
+                "b564d9cc2c269726"
+            ]
+        ]
+    },
+    {
+        "id": "f3f970a67db9a214",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: Calidad del agua (Alberca familiar)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 300;\nconst max = 600;\n\nvar valor  = Math.floor(Math.random() * (max - min) + min);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 4, \"group_id\": 2, \"location_id\": 2,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 180,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "b2e3f8da7eb000a3",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: pH (Alberca familiar)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 6.7;\nconst max = 7.3;\n\nvar valor  = (Math.random() * (max - min) + min).toFixed(1);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 5, \"group_id\": 2, \"location_id\": 2,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 220,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "f2a74693b9d9c332",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: Temperatura (Alberca familiar)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 34;\nconst max = 38;\n\nvar valor  = (Math.random() * (max - min) + min).toFixed(1);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 6, \"group_id\": 2, \"location_id\": 2,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 260,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "ea5e4b705917bc14",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: Calidad del agua (Alberca mariposa)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 300;\nconst max = 600;\n\nvar valor  = Math.floor(Math.random() * (max - min) + min);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 7, \"group_id\": 3, \"location_id\": 3,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 320,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "42f56bc6c0ba7d92",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: pH (Alberca mariposa)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 6.7;\nconst max = 7.3;\n\nvar valor  = (Math.random() * (max - min) + min).toFixed(1);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 8, \"group_id\": 3, \"location_id\": 3,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 360,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "b564d9cc2c269726",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Data: Temperatura (Alberca familiar)",
+        "func": "// sensor_id\n// 1: Calidad del agua \n// 2: pH\n// 3: Temperatura\n\n// group_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\n\n// location_id\n// 1: Alberca de olas \n// 2: Alberca familiar \n// 3: Alberca mariposa\nconst min = 34;\nconst max = 38;\n\nvar valor  = (Math.random() * (max - min) + min).toFixed(1);\nvar timenow = msg.payload - 3600000*5; \n\nmsg.payload = '{\"reading_date\": ' + timenow.toString() +\n    ', \"sensor_id\": 9, \"group_id\": 3, \"location_id\": 3,\"sensor_value\": ' + \n    valor.toString() + '}';\n\n// Ejemplo: Valor indefinido\n// msg.payload = '{\"reading_date\": ' + timenow.toString() +\n// ', \"group_id\": 1, \"location_id\": 1,\"sensor_value\": ' + \n// valor.toString() + '}';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 400,
+        "wires": [
+            [
+                "2d3c495e8c3add17"
+            ]
+        ]
+    },
+    {
+        "id": "ecc91af7caa76224",
+        "type": "link out",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "c9a29fbde3f13bcf",
+            "ce60a8649ccefe36"
+        ],
+        "x": 625,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "c9a29fbde3f13bcf",
+        "type": "link in",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "links": [
+            "ecc91af7caa76224"
+        ],
+        "x": 55,
+        "y": 720,
+        "wires": [
+            [
+                "0be32fd86d047885",
+                "b798e743e7ded08b",
+                "1d0291f094cfec1f"
+            ]
+        ]
+    },
+    {
+        "id": "1b0629f3177aff70",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "2022-08-03 21:11:02",
+        "func": "// 1659600156662-3600000*5\n// 2022-08-04 03:02:36, \n// 4 de agosto de 2022\n\n// const REFDATE = 1659600156662-3600000*5;\n\n// if (msg.payload > REFDATE){\n//     return [null, msg];    \n// }else{\n//     return [msg, null];       \n// }\n\n\nreturn [msg, null];       ",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 180,
+        "wires": [
+            [
+                "45fe715b57fcc254"
+            ],
+            [
+                "5f5213d8422992b8"
+            ]
+        ]
+    },
+    {
+        "id": "1d0291f094cfec1f",
+        "type": "function",
+        "z": "a709e1b6414e142f",
+        "name": "Hora actual",
+        "func": "var d = new Date(msg.payload.reading_date);\nmsg.payload = d.getTime();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 780,
+        "wires": [
+            [
+                "9213c9dd48089281"
+            ]
+        ]
+    },
+    {
+        "id": "1f282854542e7c38",
+        "type": "inject",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "activado",
+        "payloadType": "str",
+        "x": 120,
+        "y": 240,
+        "wires": [
+            [
+                "7b9be43337707269"
+            ]
+        ]
+    },
+    {
+        "id": "7b9be43337707269",
+        "type": "change",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "flujo",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 290,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9be0ade6c43b065b",
+        "type": "inject",
+        "z": "a709e1b6414e142f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "desactivado",
+        "payloadType": "str",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "7b9be43337707269"
+            ]
+        ]
+    },
+    {
+        "id": "5305832d3c9173d3",
+        "type": "mqtt in",
+        "z": "a709e1b6414e142f",
+        "name": "pH",
+        "topic": "IoT/ITSOEH/ph",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "43629e80e285f7dc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 440,
+        "wires": [
+            [
+                "b2a62f2f95078385"
+            ]
+        ]
+    },
+    {
+        "id": "0f8b654285025a1e",
+        "type": "mqtt in",
+        "z": "a709e1b6414e142f",
+        "name": "Calidad del agua",
+        "topic": "IoT/ITSOEH/ph",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "43629e80e285f7dc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 500,
+        "wires": [
+            [
+                "b2a62f2f95078385"
+            ]
+        ]
+    },
+    {
+        "id": "5bf9395c0b0b164f",
+        "type": "mqtt in",
+        "z": "a709e1b6414e142f",
+        "name": "Temperatura",
+        "topic": "IoT/ITSOEH/ph",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "43629e80e285f7dc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 560,
+        "wires": [
+            [
+                "b2a62f2f95078385"
+            ]
+        ]
+    },
+    {
+        "id": "63727aa3206e4666",
+        "type": "sqlitedb",
+        "db": "/home/pi/.node-red/dbs/proyecto.db",
+        "mode": "RWC"
+    },
+    {
+        "id": "43629e80e285f7dc",
+        "type": "mqtt-broker",
+        "name": "HiveMQ",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]

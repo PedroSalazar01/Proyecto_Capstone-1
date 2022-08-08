@@ -1,0 +1,1497 @@
+[
+    {
+        "id": "df262f0b18c5ba06",
+        "type": "tab",
+        "label": "Historico",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b11d8620cc8bf795",
+        "type": "ui_button",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "975c6fb17088d337",
+        "order": 0,
+        "width": "7",
+        "height": "1",
+        "passthru": false,
+        "label": "Aplicar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "Boton presionado",
+        "payloadType": "str",
+        "topic": "Boton",
+        "topicType": "str",
+        "x": 70,
+        "y": 240,
+        "wires": [
+            [
+                "d95451602f646f7d"
+            ]
+        ]
+    },
+    {
+        "id": "809450ac1a5829c6",
+        "type": "ui_ui_control",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "events": "all",
+        "x": 500,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e16f4fbabf68d85e",
+        "type": "ui_dropdown",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "place": "Seleccionar una alberca",
+        "group": "975c6fb17088d337",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Alberca de olas",
+                "value": 1,
+                "type": "num"
+            },
+            {
+                "label": "Alberca familiar",
+                "value": 2,
+                "type": "num"
+            },
+            {
+                "label": "Alberca mariposa",
+                "value": 3,
+                "type": "num"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 90,
+        "y": 60,
+        "wires": [
+            [
+                "335b8455fe19240d"
+            ]
+        ]
+    },
+    {
+        "id": "de2043c1f7a50873",
+        "type": "debug",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 490,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "335b8455fe19240d",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var setup = {};\n\nif (msg.payload === 1){ // Olas\n    setup = {\n        \"group\": \n        {\n            \"hide\": [\n                \"Albercas_Familiar\",\n                \"Albercas_Mariposa\"\n                ], \n            \"show\": [\n                \"Albercas_Control\",\n                \"Albercas_Olas\"\n                ]\n        }\n    }\n}else if (msg.payload === 2){// Familiar\n    setup = {\n        \"group\": \n        {\n            \"hide\": [\n                \"Albercas_Olas\",\n                \"Albercas_Mariposa\"\n                ], \n            \"show\": [\n                \"Albercas_Familiar\",\n                \"Albercas_Control\"\n                ]\n        }\n    }\n}else {// Mariposa\n    setup = {\n        \"group\": \n        {\n            \"hide\": [\n                \"Albercas_Familiar\",\n                \"Albercas_Olas\"\n                ], \n            \"show\": [\n                \"Albercas_Control\",\n                \"Albercas_Mariposa\"\n                ]\n        }\n    }\n}\n\nflow.set(\"Alberca\", msg.payload);\nmsg.payload = setup;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nif (flow.get(\"Alberca\") === undefined) {\n    flow.set(\"Alberca\", 1) // Olas\n}",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 60,
+        "wires": [
+            [
+                "809450ac1a5829c6"
+            ]
+        ]
+    },
+    {
+        "id": "0a15ad36a05f4d6b",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "f6ecd9bb8b6b2715",
+        "order": 1,
+        "width": "21",
+        "height": "6",
+        "label": "Calidad del agua",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 770,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9e0560153539af09",
+        "type": "comment",
+        "z": "df262f0b18c5ba06",
+        "name": "Alberca de olas",
+        "info": "",
+        "x": 100,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "83115c931d90e1c1",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "f6ecd9bb8b6b2715",
+        "order": 2,
+        "width": "21",
+        "height": "6",
+        "label": "pH",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 670,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "986704b0c830fe16",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "f6ecd9bb8b6b2715",
+        "order": 3,
+        "width": "21",
+        "height": "6",
+        "label": "Temperatura",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 790,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5d4d5c05e1a74e82",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "1d6f56843874c902",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "Calidad del agua",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 770,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6f4e38e16152d763",
+        "type": "comment",
+        "z": "df262f0b18c5ba06",
+        "name": "Alberca familiar",
+        "info": "",
+        "x": 100,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "c1adb29bd5c4978a",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "1d6f56843874c902",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "pH",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 670,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4ed2d5c9657f5826",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "1d6f56843874c902",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "Temperatura",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 770,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4e3af4baaf395d51",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "d0655c96d91182d2",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "Calidad del agua",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 770,
+        "y": 880,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "38afa557889b7a83",
+        "type": "comment",
+        "z": "df262f0b18c5ba06",
+        "name": "Alberca mariposa",
+        "info": "",
+        "x": 100,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "0d0ccc415c5e8945",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "d0655c96d91182d2",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "pH",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 670,
+        "y": 940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "27353e19b94499a2",
+        "type": "ui_chart",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "group": "d0655c96d91182d2",
+        "order": 0,
+        "width": "21",
+        "height": "6",
+        "label": "Temperatura",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#da2b2b",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 770,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3299b83e4a6a0a5a",
+        "type": "ui_date_picker",
+        "z": "df262f0b18c5ba06",
+        "name": "Inicio",
+        "label": "Fecha de inicio",
+        "group": "975c6fb17088d337",
+        "order": 2,
+        "width": "7",
+        "height": "2",
+        "passthru": false,
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 70,
+        "y": 120,
+        "wires": [
+            [
+                "394b5d56a5cef5a4",
+                "3d43a01e4cdf00ac"
+            ]
+        ]
+    },
+    {
+        "id": "b616648bf777a4ee",
+        "type": "ui_date_picker",
+        "z": "df262f0b18c5ba06",
+        "name": "Final",
+        "label": "Fecha de final",
+        "group": "975c6fb17088d337",
+        "order": 2,
+        "width": "7",
+        "height": "2",
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 70,
+        "y": 180,
+        "wires": [
+            [
+                "a8e3ceeb13cd36d8"
+            ]
+        ]
+    },
+    {
+        "id": "394b5d56a5cef5a4",
+        "type": "change",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "startDate",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 270,
+        "y": 120,
+        "wires": [
+            [
+                "de2043c1f7a50873"
+            ]
+        ]
+    },
+    {
+        "id": "a8e3ceeb13cd36d8",
+        "type": "change",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "endDate",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 270,
+        "y": 180,
+        "wires": [
+            [
+                "de2043c1f7a50873"
+            ]
+        ]
+    },
+    {
+        "id": "d95451602f646f7d",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "Validar fechas",
+        "func": "// Fecha inicial: 1656612662479 mS\n// Jueves 30 de Junio de 2022 13:11:02 GMT-0500 \n// (Central Daylight Time)\n\nconst firstDate = 1656612662479 - 3600000*5; \nconst lastDate = global.get(\"lastDate\");\nvar startDate = flow.get(\"startDate\") - 3600000*5;\nvar endDate = flow.get(\"endDate\") -3600000*5;\n\nif (startDate < firstDate){\n    msg.topic = \"Fecha de inicio invalida\";\n    msg.payload = \"La fecha de inicio es invalida.\" +\n    \" La fecha de inicio debe ser igual o mayor al \" +\n    \"jueves 30 de junio de 2022.\"\n    \n    return [null, msg];\n}\n\nif (endDate > lastDate){\n    \n    var d = new Date(lastDate)\n\n    var day = d.getUTCDate()  //day as a number 1 -31\n    var weekday = d.getUTCDay()  //-weekday as a number  0-6\n    var month = d.getUTCMonth() // month as a number 0-11\n    var year = d.getUTCFullYear() //year as a four digit number (yyyy)\n\n    var weekdays = {0: \"Domingo\", 1: \"Lunes\", 2: \"Martes\", 3: \"Miercoles\", 4: \"Jueves\", 5: \"Viernes\", 6: \"Sabado\"};\n    var months={0: \"Enero\", 1: \"Febrero\", 2: \"Marzo\", \n                3: \"Abril\", 4: \"Mayo\", 5: \"Junio\", 6: \"Julio\", \n                7: \"Agosto\", 8: \"Septiembre\", 9: \"Octubre\", \n                10: \"Noviembre\", 11: \"Diciembre\"};\n    \n    var weekday_name = weekdays[weekday];\n    var month_name = months[month];\n    \n    msg.topic = \"Fecha de termino invalida\";\n    msg.payload = \"La fecha de termino es invalida.\" +\n    \" La fecha de termino debe ser igual o menor al \" +\n    weekday_name + \" \" + day.toString() + \" de \" +  month_name + \" de \" + year.toString() + \".\" \n    \n    return [null, msg];\n}\n\nmsg.startDate = startDate;\nmsg.endDate = endDate;\nmsg.Alberca = flow.get(\"Alberca\");\n\nreturn [msg, null];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nif (flow.get(\"startDate\") === undefined) {\n    flow.set(\"startDate\", 1656612662479 - 3600000*5)\n}\n\nif (flow.get(\"endDate\") === undefined) {\n    flow.set(\"endDate\", 1656612662479 - 3600000*5)\n}\n\n",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 240,
+        "wires": [
+            [
+                "de2043c1f7a50873",
+                "2fde6266b1bcee05"
+            ],
+            [
+                "737e7a3cc8d2bf6a"
+            ]
+        ]
+    },
+    {
+        "id": "737e7a3cc8d2bf6a",
+        "type": "ui_toast",
+        "z": "df262f0b18c5ba06",
+        "position": "dialog",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 510,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "626951043a6b7c46",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 360,
+        "wires": [
+            [
+                "0a15ad36a05f4d6b"
+            ]
+        ]
+    },
+    {
+        "id": "1704e058cb1e56fb",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query Cdad Agua",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 1 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 210,
+        "y": 360,
+        "wires": [
+            [
+                "1131ccedfeee6a9e"
+            ]
+        ]
+    },
+    {
+        "id": "1131ccedfeee6a9e",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 410,
+        "y": 360,
+        "wires": [
+            [
+                "626951043a6b7c46"
+            ]
+        ]
+    },
+    {
+        "id": "212cc86683332cf1",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query pH",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 2 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 180,
+        "y": 420,
+        "wires": [
+            [
+                "83d41518273f642c"
+            ]
+        ]
+    },
+    {
+        "id": "83d41518273f642c",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 350,
+        "y": 420,
+        "wires": [
+            [
+                "cc17f318a9675d92"
+            ]
+        ]
+    },
+    {
+        "id": "cc17f318a9675d92",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 420,
+        "wires": [
+            [
+                "83115c931d90e1c1"
+            ]
+        ]
+    },
+    {
+        "id": "f0652f66add11a0e",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query Temperatura",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 3 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 210,
+        "y": 480,
+        "wires": [
+            [
+                "ee64f61fc33d7b3a"
+            ]
+        ]
+    },
+    {
+        "id": "ee64f61fc33d7b3a",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 410,
+        "y": 480,
+        "wires": [
+            [
+                "59a0f592f51da1ad",
+                "a18c21858fcec9ad"
+            ]
+        ]
+    },
+    {
+        "id": "59a0f592f51da1ad",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 480,
+        "wires": [
+            [
+                "986704b0c830fe16",
+                "fbb958f3bc585c2a"
+            ]
+        ]
+    },
+    {
+        "id": "2fde6266b1bcee05",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "if (msg.Alberca === 1){\n    return [msg, null, null];\n}else if (msg.Alberca === 2){\n    return [null, msg, null];\n}else{\n    return [null, null, msg];\n}\n",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 220,
+        "wires": [
+            [
+                "2a4be77f0c70f614"
+            ],
+            [
+                "131b14a5915914b3"
+            ],
+            [
+                "ec23785fe7fa5f0c"
+            ]
+        ]
+    },
+    {
+        "id": "bd6bf03c397d5d77",
+        "type": "link in",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "links": [
+            "2a4be77f0c70f614"
+        ],
+        "x": 35,
+        "y": 420,
+        "wires": [
+            [
+                "1704e058cb1e56fb",
+                "212cc86683332cf1",
+                "f0652f66add11a0e",
+                "309c8bc46fbf8ee1"
+            ]
+        ]
+    },
+    {
+        "id": "2a4be77f0c70f614",
+        "type": "link out",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "bd6bf03c397d5d77"
+        ],
+        "x": 685,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "131b14a5915914b3",
+        "type": "link out",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "3abaf84ac097bed3"
+        ],
+        "x": 685,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ec23785fe7fa5f0c",
+        "type": "link out",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "b1f4a12edf23c40e"
+        ],
+        "x": 685,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "ee55c82fab4e8346",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 620,
+        "wires": [
+            [
+                "5d4d5c05e1a74e82"
+            ]
+        ]
+    },
+    {
+        "id": "7d0a91e0931d6b21",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query Cdad Agua",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 4 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 210,
+        "y": 620,
+        "wires": [
+            [
+                "5d392a9e927e78f0"
+            ]
+        ]
+    },
+    {
+        "id": "5d392a9e927e78f0",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 410,
+        "y": 620,
+        "wires": [
+            [
+                "ee55c82fab4e8346"
+            ]
+        ]
+    },
+    {
+        "id": "b4daadba21c06a9c",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query pH",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 5 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 180,
+        "y": 680,
+        "wires": [
+            [
+                "a260f6d90c51fb63"
+            ]
+        ]
+    },
+    {
+        "id": "a260f6d90c51fb63",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 350,
+        "y": 680,
+        "wires": [
+            [
+                "43171b15044e047d"
+            ]
+        ]
+    },
+    {
+        "id": "43171b15044e047d",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 680,
+        "wires": [
+            [
+                "c1adb29bd5c4978a"
+            ]
+        ]
+    },
+    {
+        "id": "0cc5bb91d620d7db",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query Temperatura",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 6 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 210,
+        "y": 740,
+        "wires": [
+            [
+                "2a102234037643a9"
+            ]
+        ]
+    },
+    {
+        "id": "2a102234037643a9",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 410,
+        "y": 740,
+        "wires": [
+            [
+                "2d3bf9a832854c4a"
+            ]
+        ]
+    },
+    {
+        "id": "2d3bf9a832854c4a",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 740,
+        "wires": [
+            [
+                "4ed2d5c9657f5826"
+            ]
+        ]
+    },
+    {
+        "id": "3abaf84ac097bed3",
+        "type": "link in",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "links": [
+            "131b14a5915914b3"
+        ],
+        "x": 35,
+        "y": 680,
+        "wires": [
+            [
+                "7d0a91e0931d6b21",
+                "b4daadba21c06a9c",
+                "0cc5bb91d620d7db",
+                "410d355ddc93532f"
+            ]
+        ]
+    },
+    {
+        "id": "10c841289be71410",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 880,
+        "wires": [
+            [
+                "4e3af4baaf395d51"
+            ]
+        ]
+    },
+    {
+        "id": "704f868209f26a22",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query Cdad Agua",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 7 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 210,
+        "y": 880,
+        "wires": [
+            [
+                "f50a9615ccc8d6e5"
+            ]
+        ]
+    },
+    {
+        "id": "f50a9615ccc8d6e5",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 410,
+        "y": 880,
+        "wires": [
+            [
+                "10c841289be71410"
+            ]
+        ]
+    },
+    {
+        "id": "2e9ded3a95fa38ef",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query pH",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 8 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 180,
+        "y": 940,
+        "wires": [
+            [
+                "cc1120bd4bd10393"
+            ]
+        ]
+    },
+    {
+        "id": "cc1120bd4bd10393",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 350,
+        "y": 940,
+        "wires": [
+            [
+                "52fc261bda3f537a"
+            ]
+        ]
+    },
+    {
+        "id": "52fc261bda3f537a",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 940,
+        "wires": [
+            [
+                "0d0ccc415c5e8945"
+            ]
+        ]
+    },
+    {
+        "id": "a2909290ac2357ba",
+        "type": "template",
+        "z": "df262f0b18c5ba06",
+        "name": "Query Temperatura",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT reading_date, sensor_value\n  FROM readings\n WHERE reading_date >= {{startDate}} AND\n       reading_date <= {{endDate}} AND\n       sensor_id == 9 AND\n       group_id == {{Alberca}};",
+        "output": "str",
+        "x": 210,
+        "y": 1000,
+        "wires": [
+            [
+                "254a8d9f0606ef97"
+            ]
+        ]
+    },
+    {
+        "id": "254a8d9f0606ef97",
+        "type": "sqlite",
+        "z": "df262f0b18c5ba06",
+        "mydb": "63727aa3206e4666",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "proyecto.db",
+        "x": 410,
+        "y": 1000,
+        "wires": [
+            [
+                "46f09151f8ea5dec"
+            ]
+        ]
+    },
+    {
+        "id": "46f09151f8ea5dec",
+        "type": "function",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "func": "var data = [];\nvar noElmnts = 0;\n\nfor (var i=0; i < msg.payload.length; i++){\n    noElmnts = data.push(\n        {\n        \"x\": msg.payload[i].reading_date, \n        \"y\": msg.payload[i].sensor_value\n        }\n    );\n    // node.warn(noElmnts);\n}\n\nmsg.payload = [{\n\"series\": [\"A\"],\n\"data\": [data],\n\"labels\": [\"\"]\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 1000,
+        "wires": [
+            [
+                "27353e19b94499a2"
+            ]
+        ]
+    },
+    {
+        "id": "b1f4a12edf23c40e",
+        "type": "link in",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "links": [
+            "ec23785fe7fa5f0c"
+        ],
+        "x": 35,
+        "y": 940,
+        "wires": [
+            [
+                "704f868209f26a22",
+                "2e9ded3a95fa38ef",
+                "a2909290ac2357ba",
+                "632cb263575197ae"
+            ]
+        ]
+    },
+    {
+        "id": "410d355ddc93532f",
+        "type": "debug",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 170,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "309c8bc46fbf8ee1",
+        "type": "debug",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 150,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "632cb263575197ae",
+        "type": "debug",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 170,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "e5688e216c42f473",
+        "type": "inject",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1656612662479",
+        "payloadType": "num",
+        "x": 120,
+        "y": 20,
+        "wires": [
+            [
+                "3299b83e4a6a0a5a"
+            ]
+        ]
+    },
+    {
+        "id": "3d43a01e4cdf00ac",
+        "type": "debug",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "a18c21858fcec9ad",
+        "type": "debug",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "fbb958f3bc585c2a",
+        "type": "debug",
+        "z": "df262f0b18c5ba06",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "975c6fb17088d337",
+        "type": "ui_group",
+        "name": "Control",
+        "tab": "47a102631c5d6df9",
+        "order": 1,
+        "disp": true,
+        "width": "22",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f6ecd9bb8b6b2715",
+        "type": "ui_group",
+        "name": "Olas",
+        "tab": "47a102631c5d6df9",
+        "order": 2,
+        "disp": true,
+        "width": "22",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1d6f56843874c902",
+        "type": "ui_group",
+        "name": "Familiar",
+        "tab": "47a102631c5d6df9",
+        "order": 3,
+        "disp": true,
+        "width": "22",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d0655c96d91182d2",
+        "type": "ui_group",
+        "name": "Mariposa",
+        "tab": "47a102631c5d6df9",
+        "order": 4,
+        "disp": true,
+        "width": "22",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "63727aa3206e4666",
+        "type": "sqlitedb",
+        "db": "/home/pi/.node-red/dbs/proyecto.db",
+        "mode": "RWC"
+    },
+    {
+        "id": "47a102631c5d6df9",
+        "type": "ui_tab",
+        "name": "Albercas",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]
